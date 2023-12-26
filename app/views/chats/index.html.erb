@@ -3,7 +3,7 @@
 <div>
     <% @chats.each do |chat| %>
         <div>
-            <%= link_to chat.name, chats_path(chat)%>
+            <%= link_to chat.name, chat_path(chat)%>
         </div>
     <% end %>
 </div>

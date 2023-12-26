@@ -1,0 +1,33 @@
+<h1><%= @chat.name %></h1>
+
+<div id="messages">
+    <% @messages&.each do |message| %>
+        <p>
+            <strong><%= message.user.name%></strong>
+            <%= message.content%>
+        </p>
+    <% end %>
+</div>
+
+<h2>Write message:</h2>
+<%= form_with(model: [@chat, @message], local: true, data: {turbo: false}) do |form| %>
+    <div>
+        <%= form.label :content %>
+        <%= form.text_area :content %>
+    </div>
+
+    <div>
+        <%= form.submit "Send" %>
+    </div>
+<% end %>
+
+<% if @message.errors.any? %>
+  <div id="error_explanation">
+    <h2><%= pluralize(@message.errors.count, "error") %> prohibited this message from being saved:</h2>
+    <ul>
+    <% @message.errors.full_messages.each do |message| %>
+      <li><%= message %></li>
+    <% end %>
+    </ul>
+  </div>
+<% end %>
