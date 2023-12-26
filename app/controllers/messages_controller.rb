@@ -10,14 +10,22 @@ class MessagesController < ApplicationController
     @message = @chat.messages.new(message_params) 
     @message.user = current_user
 
-    binding.pry
+    if @message.save
+      Rails.logger.debug "Chat: #{@chat}"
 
-    if @message.save 
-      redirect_to chat_path(@chat)
-    else 
-      flash[:error] = @message.errors.full_messages
-      Rails.logger.error flash[:error]
-      render 'chats/show',  status: :unprocessable_entity
+      respond_to do |format|
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.append('messages', partial: 'messages/message', locals: { message: @message })
+        end
+        format.html { redirect_to @chat }
+      end
+    else
+      respond_to do |format|
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.replace(@message, partial: 'form', locals: { message: @message }), status: :unprocessable_entity
+        end
+        format.html { render 'chats/show', status: :unprocessable_entity }
+      end
     end
   end
 

@@ -2,15 +2,12 @@
 
 <div id="messages">
     <% @messages&.each do |message| %>
-        <p>
-            <strong><%= message.user.name%></strong>
-            <%= message.content%>
-        </p>
+        <%= render 'messages/message', message: message %>
     <% end %>
 </div>
 
 <h2>Write message:</h2>
-<%= form_with(model: [@chat, @message], local: true, data: {turbo: false}) do |form| %>
+<%= form_with(model: [@chat, @message], local: false) do |form| %>
     <div>
         <%= form.label :content %>
         <%= form.text_area :content %>
