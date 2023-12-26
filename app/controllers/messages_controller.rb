@@ -11,7 +11,9 @@ class MessagesController < ApplicationController
     @message.user = current_user
 
     if @message.save
-      Rails.logger.debug "Chat: #{@chat}"
+      Rails.logger.debug "Broadcasting with: #{render_message(@message)}"
+
+      ActionCable.server.broadcast "chat_#{@chat.id}", {user: current_user.id, message: render_message(@message)}
 
       respond_to do |format|
         format.turbo_stream do
@@ -33,5 +35,9 @@ class MessagesController < ApplicationController
 
   def message_params
     params.require(:message).permit(:content)
+  end
+
+  def render_message(message)
+    ApplicationController.renderer.render(partial: 'messages/message', locals: { message: message })
   end
 end

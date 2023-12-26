@@ -1,10 +1,14 @@
 <h1><%= @chat.name %></h1>
-
-<div id="messages">
-    <% @messages&.each do |message| %>
-        <%= render 'messages/message', message: message %>
+<% if @message.errors.any? %>
+  <div id="error_explanation">
+    <h2><%= pluralize(@message.errors.count, "error") %> prohibited this message from being saved:</h2>
+    <ul>
+    <% @message.errors.full_messages.each do |message| %>
+      <li><%= message %></li>
     <% end %>
-</div>
+    </ul>
+  </div>
+<% end %>
 
 <h2>Write message:</h2>
 <%= form_with(model: [@chat, @message], local: false) do |form| %>
@@ -18,13 +22,8 @@
     </div>
 <% end %>
 
-<% if @message.errors.any? %>
-  <div id="error_explanation">
-    <h2><%= pluralize(@message.errors.count, "error") %> prohibited this message from being saved:</h2>
-    <ul>
-    <% @message.errors.full_messages.each do |message| %>
-      <li><%= message %></li>
+<div id="messages">
+    <% @messages&.each do |message| %>
+        <%= render 'messages/message', message: message %>
     <% end %>
-    </ul>
-  </div>
-<% end %>
+</div>
