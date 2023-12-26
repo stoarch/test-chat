@@ -13,3 +13,14 @@
  *= require_tree .
  *= require_self
  */
+ #message-tooltip {
+    display: none;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    padding: 10px;
+    background-color: #f8f8f8;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    z-index: 1000;
+  }

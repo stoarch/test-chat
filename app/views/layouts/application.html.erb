@@ -10,7 +10,12 @@
     <%= javascript_importmap_tags %>
   </head>
 
-  <body data-user-id="<%= current_user.id %>">
+  <body data-user-id="<%= current_user&.id || 1 %>">
+    <audio id="message-sound" preload="auto">
+      <source src="<%= asset_path('beep.wav') %>" type="audio/wav">
+      Your browser does not support the audio element.
+    </audio>
+
     <%= yield %>
   </body>
 </html>
